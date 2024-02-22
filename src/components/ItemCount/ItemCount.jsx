@@ -1,38 +1,35 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const ItemCount = (props) => {
     const [count, setCount] = useState(props.initialValue)
+    
+    useEffect(() => {
+        console.log('accion useEffect')
+        document.title = 'Count: ' + count
+
+        return () => {
+            console.log('limpieza useEffect')
+            document.title = 'Vite + React'
+        }
+    }, [count])
+    
     console.log('render count')
-
     const decrement = () => {
-        if(count > props.min) {
-            setCount(count => count - 1)
-        }
-    }
 
+        setCount(count => count - 1)
+    }
+    
     const increment = () => {
-        if(count < props.max) {
-            setCount(count => count + 1)
-        }
-        // setCount(prev => {
-        //     console.log(prev)
-        //     return prev + 1
-        // })
-        // setCount(prev => {
-        //     console.log(prev)
-        //     return prev + 1
-        // })
-        // setCount(prev => {
-        //     console.log(prev)
-        //     return prev + 1
-        // })
+        // if(count < props.max) {
+            setCount(prev => prev + 1)
+        // }
     }
 
     return (
         <div>
             <h1>{count}</h1>
-            <button onClick={decrement}>Decrementar</button>
-            <button onClick={increment}>Incrementar</button>
+            <button onClick={decrement}>Incrementar 1</button>
+            <button onClick={increment}>Incrementar 2</button>
         </div>
     )
 }

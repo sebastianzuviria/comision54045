@@ -1,24 +1,51 @@
-import Navbar from "./components/Navbar/Navbar"
-import ItemListContainer from "./components/ItemListContainer/ItemListContainer"
-// import Button from "./components/Button/Button"
-// import ItemCount from "./components/ItemCount/ItemCount"
+import { useState } from "react"
+import ItemCount from "./components/ItemCount/ItemCount"
+import ContadorDeVueltas from "./components/ContadorDeVueltas/ContadorDeVueltas"
 
+// const Layout = (props) => {
+//   console.log(props)
+//   return (
+//     <div>
+//       <h1 style={{ color: props.color}}>{props.title}</h1>
+//       {props.children}
+//     </div>
+//   )
+// }
 
-function App() {
-  console.log('render app')
+// function App() {
+//   return (
+//     <>
+//       <Layout title={'Primera pagina'} color='red'>
+//         <p style={ {color: 'red'} }>Este seria el texto de la primera pagina</p>
+//         <button>Boton</button>
+//         <p>Este seria el texto de la primera pagina</p>
+//       </Layout>
+//       <Layout title={'Segunda pagina'} color='red'>
+//         <input />
+//       </Layout>
+//     </>
+//   )
+// }
+
+// export default App
+
+// const App = () => {
+//   const [show, setShow] = useState(false)
+
+//   return (
+//     <>
+//       <button onClick={() => setShow(prev => !prev)}>{show ? 'ocultar' : 'mostrar'}</button>
+//       {show ? <ItemCount initialValue={1}/> : null }
+//     </>
+//   )
+// }
+
+// export default App
+
+const App = () => {
   return (
     <>
-    <Navbar />
-    <ItemListContainer greeting='Bienvenidos'/>
-      {/* <ItemCount initialValue={1} min={0} max={10}/>
-      <ItemCount initialValue={10}  min={5} max={15}/>
-      <ItemCount initialValue={100}  min={95} max={105}/> */}
-      {/* <Navbar />
-      <h1>Ecommerce</h1>
-      <a>Prueba</a> */}
-      {/* <Button text='Home' textColor='red' className='btn btn-primary' callback={() => console.log('hice click en Home')}/>
-      <Button text='Contact' textColor='blue' className='btn btn-secundary' callback={() => console.log('hice click en Contact')}/>
-      <Button text='About' textColor='white'  className='btn btn-danger' callback={() => console.log('hice click en About')}/> */}
+      <ContadorDeVueltas />
     </>
   )
 }
