@@ -1,16 +1,17 @@
 import classes from './Navbar.module.css'
 import CartWidget from '../CartWidget/CartWidget'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
-    console.log(classes)
+    const navigate = useNavigate()
 
     return (
         <header className={classes.header}>
-           <h4 style={{ color: 'red', fontSize: 10}}>Ecommerce 54045</h4> 
+           <h2 onClick={() => navigate('/')} style={{ color: 'red', fontSize: 10, cursor: 'pointer'}}>Ecommerce 54045</h2> 
            <nav>
-                <a className='btn btn-primary'>Celulares</a>
-                <a>Tablets</a>
-                <a>Notebooks</a>
+                <Link to='/category/celular'>Celulares</Link>
+                <Link to='/category/tablet'>Tablets</Link>
+                <Link to='/category/notebook'>Notebooks</Link>
            </nav>
            <CartWidget />
         </header>
