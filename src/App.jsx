@@ -2,6 +2,7 @@ import Navbar from './components/Navbar/Navbar'
 import ItemListContainer from './components/ItemListContainer/ItemListContainer'
 import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Button from './components/Button/Button'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path='/item/:itemId' element={<ItemDetailContainer />}/>
         </Routes>
       </BrowserRouter>
+      {/* <Button /> */}
     </>
   )
 }
