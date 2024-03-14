@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { CartContext } from '../../context/CartContext'
 
 const InputCount = ({ onAdd, stock, initial= 1 }) => {
     const [count, setCount] = useState(initial)
@@ -44,20 +45,24 @@ const ButtonCount = ({ onAdd, stock, initial = 1 }) => {
 
 
 const ItemDetail = ({ id, name, category, img, price, stock, description}) => {
+
     const [inputType, setInputType] = useState('button')
 
     const [quantity, setQuantity] = useState(0)
 
     const ItemCount = inputType === 'input' ? InputCount : ButtonCount
 
-    const handleOnAdd = (count) => {
+    const { addItem } = useContext(CartContext)
+
+    const handleOnAdd = (quantity) => {
         const objProductToAdd = {
-            id, name, price, count
+            id, name, price, quantity
         }
         console.log(objProductToAdd)
-        console.log('agregue al carrito: ', count)
 
-        setQuantity(count)
+        setQuantity(quantity)
+
+        addItem(objProductToAdd)
     }
 
     return (
@@ -89,7 +94,9 @@ const ItemDetail = ({ id, name, category, img, price, stock, description}) => {
                     quantity === 0 ? (
                         <ItemCount onAdd={handleOnAdd} stock={stock}/>
                     ) : (
-                        <Link to='/cart'>Finalizar compra</Link>
+                        <>
+                            <Link to='/cart'>Finalizar compra</Link>
+                        </>
                     )
                 }
             </footer>
