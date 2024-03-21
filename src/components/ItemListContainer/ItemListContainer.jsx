@@ -1,8 +1,12 @@
 import { useState, useEffect, memo } from "react"
-import { getProducts, getProductsByCategory } from "../../asyncMock"
+// import { getProducts, getProductsByCategory } from "../../asyncMock"
 import ItemList from "../ItemList/ItemList"
 import { useParams } from "react-router-dom"
 import { useNotification } from "../../notification/hooks/useNotification"
+
+import { getDocs, collection, query, where} from 'firebase/firestore'
+
+import { db } from "../../services/firebase/firebaseConfig"
 
 const ItemListMemoized = memo(ItemList)
 
@@ -22,34 +26,25 @@ const ItemListContainer = ({ greeting }) => {
 
     useEffect(() => {
 
-        const asyncFunction = categoryId ? getProductsByCategory : getProducts
+        const productsCollection = categoryId ? (
+            query(collection(db, 'products'), where('category', '==', categoryId))
+        ) : (
+            collection(db, 'products')
+        )
 
-        asyncFunction(categoryId)
-            .then(result => {
-                setProducts(result)
+        getDocs(productsCollection)
+            .then(querySnapshot => {
+                const productsAdapted = querySnapshot.docs.map(doc => {
+                    const data = doc.data()
+
+                    return { id: doc.id, ...data}
+                })
+
+                setProducts(productsAdapted)
             })
-            .catch(error => {
+            .catch(() => {
                 showNotification('error', 'Hubo un error cargado los productos')
-            })
-
-        // if(!categoryId) {
-        //     getProducts()
-        //         .then(result => {
-        //             setProducts(result)
-        //         })
-        //         .catch(error => {
-        //             console.log(error)
-        //         })
-        // } else {
-        //     getProductsByCategory(categoryId)
-        //         .then(result => {
-        //             setProducts(result)
-        //         })
-        //         .catch(error => {
-        //             console.log(error)
-        //         })
-        // }
-        
+            })        
     }, [categoryId])
 
     return (
