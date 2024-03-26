@@ -4,7 +4,7 @@ import ItemList from "../ItemList/ItemList"
 import { useParams } from "react-router-dom"
 import { useNotification } from "../../notification/hooks/useNotification"
 
-import { getDocs, collection, query, where} from 'firebase/firestore'
+import { getDocs, collection, query, where, orderBy} from 'firebase/firestore'
 
 import { db } from "../../services/firebase/firebaseConfig"
 
@@ -29,7 +29,7 @@ const ItemListContainer = ({ greeting }) => {
         const productsCollection = categoryId ? (
             query(collection(db, 'products'), where('category', '==', categoryId))
         ) : (
-            collection(db, 'products')
+            query(collection(db, 'products'), orderBy('name', 'desc'))
         )
 
         getDocs(productsCollection)

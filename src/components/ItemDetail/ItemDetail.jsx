@@ -49,11 +49,11 @@ const ItemDetail = ({ id, name, category, img, price, stock, description}) => {
 
     const [inputType, setInputType] = useState('button')
 
-    const [quantity, setQuantity] = useState(0)
+    // const [quantity, setQuantity] = useState(0)
 
     const ItemCount = inputType === 'input' ? InputCount : ButtonCount
 
-    const { addItem } = useContext(CartContext)
+    const { addItem, isInCart } = useContext(CartContext)
 
     const { showNotification } = useNotification()
 
@@ -63,7 +63,7 @@ const ItemDetail = ({ id, name, category, img, price, stock, description}) => {
         }
         console.log(objProductToAdd)
         showNotification('success', `Se agrego correctamente ${quantity} ${name}`)
-        setQuantity(quantity)
+        // setQuantity(quantity)
 
         addItem(objProductToAdd)
     }
@@ -94,7 +94,7 @@ const ItemDetail = ({ id, name, category, img, price, stock, description}) => {
             </section>           
             <footer>
                 {
-                    quantity === 0 ? (
+                    !isInCart(id) ? (
                         <ItemCount onAdd={handleOnAdd} stock={stock}/>
                     ) : (
                         <>
