@@ -4,7 +4,7 @@ import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailCont
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import { NotificationProvider } from './notification/NotificationsService'
-import CartView from './components/Cartview/CartView'
+import CartView from './components/CartView/CartView'
 import Checkout from './components/Checkout/Checkout'
 // import { useEffect } from 'react'
 // import { addDoc, collection } from 'firebase/firestore'
