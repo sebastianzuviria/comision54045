@@ -4,32 +4,50 @@ import { useParams } from "react-router-dom"
 import ItemDetail from "../ItemDetail/ItemDetail"
 import { getDoc, doc } from "firebase/firestore"
 import { db } from "../../services/firebase/firebaseConfig"
+import { useNotification } from "../../notification/hooks/useNotification"
+import { useAsync } from "../../hooks/useAsync"
+import { getProductById } from "../../services/firebase/firestore/products"
 
 
 const ItemDetailContainer = () => {
-    const [product, setProduct] = useState(null)
+    // const [product, setProduct] = useState(null)
+
+   
+
+    // const { showNotification } = useNotification()
+
+    // useEffect(() => {
+    //     const productDoc = doc(db, 'products', itemId)
+
+    //     getDoc(productDoc)
+    //         .then(queryDocumentSnapshot => {
+    //             const data = queryDocumentSnapshot.data()
+    //             const productAdapted = { id: queryDocumentSnapshot.id, ...data}
+
+    //             setProduct(productAdapted)
+    //         })
+    //         .catch()
+
+    //     // getProductById(itemId)
+    //     //     .then(response => {
+    //     //         setProduct(response)
+    //     //     })
+    // }, [itemId])
 
     const { itemId } = useParams()
 
-    useEffect(() => {
-        const productDoc = doc(db, 'products', itemId)
+    const asyncFunction = () => getProductById(itemId)
 
-        getDoc(productDoc)
-            .then(queryDocumentSnapshot => {
-                const data = queryDocumentSnapshot.data()
-                const productAdapted = { id: queryDocumentSnapshot.id, ...data}
+    const { data: product, loading, error} = useAsync(asyncFunction, [itemId])
 
-                setProduct(productAdapted)
-            })
-            .catch()
+    if(loading) {
+        return <h1>Se esta cargando el producto...</h1>
+    }
 
-        // getProductById(itemId)
-        //     .then(response => {
-        //         setProduct(response)
-        //     })
-    }, [itemId])
-
-
+    if(error) {
+        return <h1>Hubo un error obteniendo el producto.</h1>
+    }
+    
     return (
         <div style={{ background: 'pink'}}>
             <h1>Detalle de producto</h1>

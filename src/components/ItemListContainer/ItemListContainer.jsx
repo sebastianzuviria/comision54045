@@ -1,51 +1,25 @@
-import { useState, useEffect, memo } from "react"
-// import { getProducts, getProductsByCategory } from "../../asyncMock"
+import { memo } from "react"
 import ItemList from "../ItemList/ItemList"
 import { useParams } from "react-router-dom"
-import { useNotification } from "../../notification/hooks/useNotification"
-
-import { getDocs, collection, query, where, orderBy} from 'firebase/firestore'
-
-import { db } from "../../services/firebase/firebaseConfig"
+import { getProducts } from "../../services/firebase/firestore/products"
+import { useAsync } from "../../hooks/useAsync"
 
 const ItemListMemoized = memo(ItemList)
 
-const ItemListContainer = ({ greeting }) => {
-    const [products, setProducts] = useState()
-    const [render, setRender] = useState(false)
-
+const ItemListContainer = ({ greeting }) => {                               
     const { categoryId } = useParams()
+    
+    const asyncFunction = () =>  getProducts(categoryId)
+    
+    const { data: products, loading, error } = useAsync(asyncFunction, [categoryId])
+    
+    if(loading) {
+        return <h1>Se estan cargando los productos...</h1>
+    }
 
-    const { showNotification } = useNotification()
-
-    useEffect(() => {
-        setTimeout(() => {
-            setRender(prev => !prev)
-        }, 2000)
-    }, [])
-
-    useEffect(() => {
-
-        const productsCollection = categoryId ? (
-            query(collection(db, 'products'), where('category', '==', categoryId))
-        ) : (
-            query(collection(db, 'products'), orderBy('name', 'desc'))
-        )
-
-        getDocs(productsCollection)
-            .then(querySnapshot => {
-                const productsAdapted = querySnapshot.docs.map(doc => {
-                    const data = doc.data()
-
-                    return { id: doc.id, ...data}
-                })
-
-                setProducts(productsAdapted)
-            })
-            .catch(() => {
-                showNotification('error', 'Hubo un error cargado los productos')
-            })        
-    }, [categoryId])
+    if(error) {
+        return <h1>Hubo un error al cargar los productos</h1>
+    }
 
     return (
         <div style={{ background: 'orange'}} onClick={() => console.log('hice click en itemlistcontainer')}>
