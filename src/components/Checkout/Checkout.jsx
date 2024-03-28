@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
 import { CartContext } from "../../context/CartContext"
-import { getDocs, collection, query, where, documentId, writeBatch, addDoc } from "firebase/firestore"
+import { getDocs, collection, query, where, documentId, writeBatch, addDoc, Timestamp } from "firebase/firestore"
 import { db } from "../../services/firebase/firebaseConfig"
 
 const Checkout = () => {
@@ -18,7 +18,8 @@ const Checkout = () => {
                     phone: '123456789'
                 },
                 items: cart,
-                total
+                total,
+                date: Timestamp.fromDate(new Date())
             }
     
             const batch = writeBatch(db)
